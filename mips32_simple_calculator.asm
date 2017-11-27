@@ -57,64 +57,64 @@ loop:
         la $a0,confsoma
         li $v0,4
         syscall
-		jal dados
-		jal sum
-		j fimoperacoes
+	jal dados
+	jal sum
+	j fimoperacoes
 		
 fimsoma:		#; in english i'd be something like 'end_of_the_sum'
-		lb $t1, 0($a0)
+	lb $t1, 0($a0)
         lb $t2,subb
         bne $t1,$t2,fimsub
         la $a0,confsub
         li $v0,4
         syscall
-		jal dados
-		jal subt
-		j fimoperacoes
+	jal dados
+	jal subt
+	j fimoperacoes
 		
 fimsub:			#; in english i'd be something like 'end_of_the_subtraction'
-		lb $t1, 0($a0)
+	lb $t1, 0($a0)
         lb $t2,multip
         bne $t1,$t2,fimmul
         la $a0,confmul
         li $v0,4
         syscall
-		jal dados
-		jal multi
-		j fimoperacoes
+	jal dados
+	jal multi
+	j fimoperacoes
 		
 fimmul:			#; in english i'd be something like 'end_of_the_multiplication'
-		lb $t1, 0($a0)
+	lb $t1, 0($a0)
         lb $t2,divi
         bne $t1,$t2,fimdiv
         la $a0,confdiv
         li $v0,4
         syscall
-		jal dados
-		jal divis
-		j fimoperacoes
+	jal dados
+	jal divis
+	j fimoperacoes
 		
 fimdiv:			#; in english i'd be something like 'end_of_the_division'
-		lb $t1, 0($a0)
+	lb $t1, 0($a0)
         lb $t2,ms1
         bne $t1,$t2,fimoperacoes
-		j fimprog #;jumps to the end of the program
+	j fimprog #;jumps to the end of the program
 		
 fimoperacoes:	#; in english i'd be something like 'end_of_the_operations'
-	#;jumps a line and returns to the loop
-		la $a0, pulalinha($0)
-		li $v0, 4
-		syscall
-		j loop	
+	la $a0, pulalinha($0) #;jumps a line and returns to the loop
+	li $v0, 4
+	syscall
+	j loop	
 		
 fimprog:		#; Here lies the system call that ends up the program
-		la $a0, ms4($0)
-		li $v0, 4
-		syscall
-		li $v0, 10
-		syscall
-		
-		#the functions used lie below...
+	la $a0, ms4($0)
+	li $v0, 4
+	syscall
+	li $v0, 10
+	syscall
+	
+	
+#the functions used lie below...
 		
 			
 dados:	#;this is the number readin' loop. here comes the data taking from the user :D
@@ -132,7 +132,7 @@ dados:	#;this is the number readin' loop. here comes the data taking from the us
 		li $v0, 5
 		syscall
 		move $t3,$v0
-		jr $ra
+		jr $ra		#; in every sub-routine/function 'jr $ra' will return to the line below the last 'jal label' executed
 sum:
 		add $t3, $t2, $t3
 		la $a0, ms3($0)
@@ -162,7 +162,8 @@ multi:
 		syscall
 		jr $ra
 		
-divis:	li $t4, 4
+divis:	
+		li $t4, 4
 		li $t8, 8
 		sw $t2, num1($t4)
 		sw $t3, num1($t8)
